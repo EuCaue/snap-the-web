@@ -1,0 +1,28 @@
+@import "primeng/resources/primeng.css";
+/* @import "primeng/resources/themes/aura-light-noir/theme.css"; */
+@import "primeng/resources/themes/aura-light-noir/theme.css";
+
+@layer tailwind-base, primeng, tailwind-utilities;
+
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+:root,
+body,
+html {
+  --font-family: sans-serif !important;
+  font-family: var(--font-family);
+  background-color: var(--primary-text-color);
+  color: var(--primary-color);
+}
+
+.error {
+  color: var(--red-500);
+  font-weight: bol;
+}

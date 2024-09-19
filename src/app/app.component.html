@@ -1,0 +1,112 @@
+<section class="min-w-[100mvw] min-h-[100dvh] flex justify-center items-center">
+  <div class="flex flex-col items-center justify-center">
+    <h1 class="text-4xl text-center">Snap a website!</h1>
+    <form
+      class="flex flex-wrap items-center justify-center gap-4"
+      [formGroup]="form"
+      (ngSubmit)="callApi()"
+    >
+      <label
+        for="url-input"
+        class="flex flex-col gap-4 text-center min-w-full justify-center shadow-sm"
+      >
+        <input
+          type="url"
+          pInputText
+          [(ngModel)]="urlToSnap"
+          formControlName="url-input"
+          class="px-4 py-2 text-center text-md font-mono min-w-full"
+          (keyup.enter)="callApi()"
+          placeholder="https://www.github.com/"
+          required
+        />
+        <small
+          *ngIf="
+            form.get('url-input')?.invalid && form.get('url-iput')?.touched
+          "
+          >Invalid URL</small
+        >
+      </label>
+      <p-splitButton
+        label="Snap!"
+        (click)="callApi()"
+        [model]="items"
+        tooltip="Snap {{ form.get('url-input')?.value }}"
+        raised
+      />
+    </form>
+    <p-card class="max-w-96 rounded-md mt-8 border-solid border border-[--primary-100] shadow-lg"*ngIf="showSnapedImage" >
+
+      <ng-template pTemplate="header">
+        <h1 class="font-bold text-3xl text-center">
+          Snap Preview
+        </h1>
+      </ng-template>
+
+      <ng-template pTemplate="content" >
+        <p-image
+          src="https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg"
+          alt="Preview Image of {{ form.get('url-input')?.value }}"
+          styleClass="rounded-lg"
+          imageClass="w-full rounded-lg"
+          [preview]="true"
+        />
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <div class="flex gap-4">
+          <p-button
+            label="Close"
+            severity="secondary"
+            class="w-full"
+            styleClass="w-full"
+            outlined
+          />
+          <p-button label="Download" class="w-full" styleClass="w-full" />
+        </div>
+      </ng-template>
+    </p-card>
+
+    <p-dialog
+      header="Options"
+      [modal]="true"
+      [(visible)]="showOptionsPopup"
+      [style]="{ width: '20rem' }"
+    >
+      <div class="grid grid-rows-2 gap-2">
+        <div class="flex items-start justify-start flex-row gap-2 mt-2">
+          <label
+            for="captureFullPage"
+            class="flex items-center justify-center gap-4"
+          >
+            Capture Full Page
+          </label>
+          <p-inputSwitch
+            [(ngModel)]="captureFullPage"
+            id="captureFullPage"
+            pTooltip="Capture the entire webpage, not just the visible part."
+            class="flex items-center justify-center gap-4"
+          />
+        </div>
+        <div class="flex items-start flex-col gap-2">
+          <label for="viewport">ViewPort</label>
+          <input
+            type="url"
+            pInputText
+            [(ngModel)]="viewport"
+            pTooltip="Specify the width and height for the screenshot."
+            name="viewport"
+            (input)="checkViewPort(viewport)"
+            maxlength="9"
+            placeholder="1280x720"
+          />
+          <small *ngIf="isViewPortInvalid" class="error">
+            Current viewport it's not correct, use this pattern
+            <code>1920x1080</code>
+          </small>
+        </div>
+      </div>
+    </p-dialog>
+  </div>
+</section>
+
+<router-outlet />
