@@ -1,0 +1,39 @@
+<p-progressSpinner
+  *ngIf="loading$ | async"
+  class="mt-8"
+  styleClass="w-24 h-24"
+  strokeWidth="5"
+  ariaLabel="Loading snapped website"
+/>
+
+<p-card
+  class="rounded-md mt-8 border-solid border border-[--primary-100] shadow-lg"
+  *ngIf="data.showSnappedImage"
+>
+  <ng-template pTemplate="header">
+    <h1 class="font-bold text-3xl text-center">Snap Preview</h1>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <p-image
+      [src]="data.snapUrl"
+      alt="Preview Image of input dinaymic value here"
+      styleClass="rounded-lg max-w-96"
+      imageClass="w-full rounded-lg"
+      [preview]="true"
+    />
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <div class="flex gap-4">
+      <p-button
+        label="Close"
+        (click)="this.data.showSnappedImage = false"
+        severity="secondary"
+        class="w-full"
+        outlined
+        styleClass="w-full"
+      />
+      <p-button label="Download" class="w-full" styleClass="w-full" />
+    </div>
+  </ng-template>
+</p-card>

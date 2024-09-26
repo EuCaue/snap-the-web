@@ -1,0 +1,33 @@
+<form
+  class="flex flex-wrap items-center justify-center gap-4"
+  [formGroup]="form"
+  (ngSubmit)="callApi()"
+>
+  <label
+    for="url-input"
+    class="flex flex-col gap-4 text-center min-w-full justify-center shadow-sm"
+  >
+    <input
+      type="url"
+      pInputText
+      formControlName="url-input"
+      class="px-4 py-2 text-center text-md font-mono min-w-full"
+      (keyup.enter)="callApi()"
+      placeholder="https://www.github.com/"
+      required
+    />
+    <small
+      *ngIf="form.get('url-input')?.invalid && form.get('url-iput')?.touched"
+      >Invalid URL</small
+    >
+  </label>
+  <p-splitButton
+    label="Snap!"
+    (click)="callApi()"
+    [model]="items"
+    tooltip="Snap {{ form.get('url-input')?.value }}"
+    raised
+  />
+</form>
+
+<app-snap-options [(showPopup)]="showOptionsPopup"/>

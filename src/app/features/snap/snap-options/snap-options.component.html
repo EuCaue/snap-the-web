@@ -1,0 +1,35 @@
+<p-dialog header="Options" [modal]="true" [(visible)]="showPopup" [style]="{ width: '20rem' }">
+  <div class="grid grid-rows-2 gap-2">
+    <div class="flex items-start justify-start flex-row gap-2 mt-2">
+      <label
+        for="captureFullPage"
+        class="flex items-center justify-center gap-4"
+      >
+        Capture Full Page
+      </label>
+      <p-inputSwitch
+        [(ngModel)]="captureFullPage"
+        id="captureFullPage"
+        pTooltip="Capture the entire webpage, not just the visible part."
+        class="flex items-center justify-center gap-4"
+      />
+    </div>
+    <div class="flex items-start flex-col gap-2">
+      <label for="viewport">ViewPort</label>
+      <input
+        type="url"
+        pInputText
+        [(ngModel)]="viewport"
+        pTooltip="Specify the width and height for the screenshot."
+        name="viewport"
+        (input)="checkViewPort(viewport)"
+        maxlength="9"
+        placeholder="1280x720"
+      />
+      <small *ngIf="isViewPortInvalid" class="error">
+        Current viewport it's not correct, use this pattern
+        <code>1920x1080</code>
+      </small>
+    </div>
+  </div>
+</p-dialog>
