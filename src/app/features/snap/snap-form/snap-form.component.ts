@@ -10,8 +10,8 @@ import {
 import { MenuItem } from 'primeng/api';
 import { InputTextModule } from 'primeng/inputtext';
 import { SplitButtonModule } from 'primeng/splitbutton';
+import { SnapService } from '../services/snap.service';
 import { SnapOptionsComponent } from '../snap-options/snap-options.component';
-import { SnapService } from '../../../core/services/snap.service';
 
 @Component({
   selector: 'app-snap-form',
@@ -28,15 +28,15 @@ import { SnapService } from '../../../core/services/snap.service';
   styleUrl: './snap-form.component.css',
 })
 export class SnapFormComponent {
-  showOptionsPopup: boolean = false;
   form: FormGroup;
+  showOptionsPopup: boolean = false;
   items: Array<MenuItem> = [
     {
       label: 'Options',
       tooltip: 'Modify the behaviour of the request',
       styleClass: 'text-wrap',
       command: (_s) => {
-        this.showOptionsPopup = !this.showOptionsPopup;
+        this.showOptionsPopup = true;
       },
     },
     {
@@ -52,7 +52,7 @@ export class SnapFormComponent {
     private snapService: SnapService,
   ) {
     const pattern =
-      /(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?\/[a-zA-Z0-9]{2,}|((https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?)|(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})?/g;
+      /(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})(\.[a-zA-Z0-9]{2,})/
 
     this.form = this.fb.group({
       'url-input': ['', [Validators.required, Validators.pattern(pattern)]],
@@ -60,14 +60,21 @@ export class SnapFormComponent {
   }
 
   callApi() {
-    const bb = this.snapService.getSnap('https://whatthecommit.com/index.txt');
-    bb.subscribe((data) => {
+    const urlSnapControl = this.form.get('url-input');
+    if (urlSnapControl?.invalid) {
+      urlSnapControl.markAsDirty();
+      urlSnapControl.markAsTouched();
+      return;
+    }
+    const snapOptions = this.snapService.getSnapOptions();
+    const snapObservable = this.snapService.getSnap(snapOptions);
+    snapObservable.subscribe(() => {
       this.snapService.setData({
         snapUrl:
           'https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg',
         showSnappedImage: true,
       });
-      this.form.get('url-input')?.reset()
+      this.form.get('url-input')?.reset();
     });
   }
 }
