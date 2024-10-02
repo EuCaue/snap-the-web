@@ -1,4 +1,10 @@
-<p-dialog header="Options" [modal]="true" [(visible)]="showPopup" [style]="{ width: '20rem' }">
+<p-dialog
+  header="Options"
+  [modal]="true"
+  [(visible)]="showPopup"
+  [style]="{width: '20rem'}"
+  (onHide)="this.updateShowPopup(false)"
+>
   <div class="grid grid-rows-2 gap-2">
     <div class="flex items-start justify-start flex-row gap-2 mt-2">
       <label
@@ -8,10 +14,11 @@
         Capture Full Page
       </label>
       <p-inputSwitch
-        [(ngModel)]="captureFullPage"
+        [(ngModel)]="this.snapOptions.captureFullPage"
         id="captureFullPage"
         pTooltip="Capture the entire webpage, not just the visible part."
         class="flex items-center justify-center gap-4"
+        (ngModelChange)="updateCaptureFullPage($event)"
       />
     </div>
     <div class="flex items-start flex-col gap-2">
@@ -19,10 +26,10 @@
       <input
         type="url"
         pInputText
-        [(ngModel)]="viewport"
+        [(ngModel)]="this.snapOptions.viewport"
         pTooltip="Specify the width and height for the screenshot."
         name="viewport"
-        (input)="checkViewPort(viewport)"
+        (input)="checkViewPort(this.snapOptions.viewport)"
         maxlength="9"
         placeholder="1280x720"
       />
