@@ -1,0 +1,36 @@
+<header class="w-svw">
+  <nav class="fixed top-0 grid grid-cols-2 w-full mt-2">
+    <a routerLink="/" class="justify-self-start text">
+      <span class="relative inline-block">
+        <p
+          class="absolute inset-0 flex justify-center items-center text-[var(--surface-900)] font-bold text-lg"
+        >
+          S
+        </p>
+        <i class="pi pi-globe text-4xl text-[var(--surface-300)]"></i>
+      </span>
+    </a>
+    <p-button
+      (onClick)="menu.toggle($event)"
+      icon="pi pi-ellipsis-v"
+      class="justify-self-end mr-6"
+    />
+  </nav>
+  <p-menu #menu [model]="items" [popup]="true">
+    <ng-template pTemplate="end">
+      <p-toggleButton
+        [(ngModel)]="isDarkMode"
+        (onChange)="this.toggleTheme()"
+        onIcon="pi pi-moon"
+        offIcon="pi pi-sun"
+        styleClass="w-full"
+        class="mt-8"
+        ariaLabel="Change theme"
+        pTooltip="Toggle Light/Dark Mode"
+        tooltipPosition="bottom"
+      />
+    </ng-template>
+  </p-menu>
+</header>
+
+<router-outlet></router-outlet>
