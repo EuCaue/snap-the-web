@@ -18,7 +18,8 @@ html {
   font-family: var(--font-family);
   background-color: var(--surface-ground);
   color: var(--text-color);
-overflow: hidden;
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
 }
 
 .error {
@@ -31,4 +32,17 @@ ol {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+  outline: none;
+  border: none;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
 }
