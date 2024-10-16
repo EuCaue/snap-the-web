@@ -1,10 +1,11 @@
-// TODO: use the real api
-// TODO: make the download without previewing
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, Subject, tap } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { SnapOptions, type SnapData } from '../types/types';
+type ApiResponse= {
+  url: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -58,20 +59,45 @@ export class SnapService {
     this.snapUrlPreview.next(data);
   }
 
-  getSnap(snapOptions: SnapOptions): Observable<string> {
+  getSnap(url: string, snapOptions: SnapOptions): Observable<string> {
+    const [width, height] = snapOptions.viewport.split("x");
     this.setData({
       snapUrl: '',
       showSnappedImage: false,
     });
     this.isLoading.next(true);
     return this.http
-      .get('https://whatthecommit.com/index.txt', { responseType: 'text' })
+      .get<ApiResponse>(
+        `https://api.apiflash.com/v1/urltoimage?access_key=${process.env["TOKEN"]}&wait_until=page_loaded&url=${url}&response_type=json&full_page=${snapOptions.captureFullPage}&width=${width}&height=${height}`,
+        { responseType: 'json' },
+      )
       .pipe(
         tap(() => this.isLoading.next(false)),
+        map((data) => {
+          return data.url;
+        }),
         catchError((error) => {
           this.isLoading.next(false);
           throw error;
         }),
       );
+  }
+  downloadImage(imageUrl: string): Observable<void> {
+    const fileName = `snapped-image-${new Date().toLocaleTimeString()}.jpg`;
+
+    return this.http.get(imageUrl, { responseType: 'blob' }).pipe(
+      map((blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = fileName;
+        link.click();
+        window.URL.revokeObjectURL(url);
+      }),
+      catchError((err) => {
+        console.error('Error downloading image:', err);
+        return of();
+      }),
+    );
   }
 }

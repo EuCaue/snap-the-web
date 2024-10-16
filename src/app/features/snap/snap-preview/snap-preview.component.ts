@@ -37,22 +37,18 @@ export class SnapPreviewComponent {
     this.subscription.unsubscribe();
   }
 
-  async downloadImage() {
+  downloadImage() {
     this.loadingDownload = true;
     const imageUrl = this.snapData.snapUrl;
-    const fileName = `snapped-image-${new Date().toLocaleTimeString()}.jpg`;
-    try {
-      const response = await fetch(imageUrl);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = fileName;
-      link.click();
-      window.URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error('Error', err);
-    } finally {
+    if (imageUrl) {
+      this.snapService.downloadImage(imageUrl).subscribe({
+        //  TODO: send a feedback to user
+        next: () => console.log('Download completed'),
+        error: (err) => console.error('Error while downloading image:', err),
+        complete: () => (this.loadingDownload = false),
+      });
+    } else {
+      console.warn('No image URL available');
       this.loadingDownload = false;
     }
   }
