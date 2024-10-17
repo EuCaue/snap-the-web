@@ -53,7 +53,6 @@ export class SnapFormComponent {
       label: 'Download',
       tooltip: 'Download without showing the screenshot',
       command: (_s) => {
-        console.log('cliecked in downoad direct');
         this.showToast();
         this.callApi(false);
         this.snapService.snapUrlPreview$.pipe(take(1)).subscribe(() => {
@@ -89,7 +88,6 @@ export class SnapFormComponent {
   }
 
   callApi(showSnappedImage: boolean = true) {
-    console.log('called api');
     const urlSnapControl = this.form.get('url-input');
     if (urlSnapControl?.invalid) {
       urlSnapControl.markAsDirty();

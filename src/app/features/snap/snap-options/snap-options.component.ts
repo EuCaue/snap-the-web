@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
 import { SnapService } from '../services/snap.service';
-import { SnapOptions } from '../types/types';
+import { ImageFormat, SnapOptions } from '../types/types';
+import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-snap-options',
@@ -16,15 +17,17 @@ import { SnapOptions } from '../types/types';
     CommonModule,
     InputSwitchModule,
     InputTextModule,
+    DropdownModule,
   ],
   templateUrl: './snap-options.component.html',
   styleUrl: './snap-options.component.css',
 })
-export class SnapOptionsComponent {
+export class SnapOptionsComponent implements OnInit {
   @Input() showPopup: boolean = Boolean();
   @Output() showPopupChange = new EventEmitter<boolean>();
   isViewPortInvalid: boolean = false;
   snapOptions: SnapOptions;
+  imageFormats: ImageFormat[] | undefined;
 
   constructor(private snapService: SnapService) {
     this.snapOptions = this.snapService.getSnapOptions();
@@ -33,6 +36,7 @@ export class SnapOptionsComponent {
   updateShowPopup(state: boolean) {
     this.showPopup = state;
     this.showPopupChange.emit(this.showPopup);
+    console.log(this.imageFormats);
   }
 
   updateCaptureFullPage(captureFullPage: boolean) {
@@ -41,6 +45,12 @@ export class SnapOptionsComponent {
 
   updateViewport(viewport: string) {
     this.snapService.setSnapOptions({ viewport });
+  }
+
+  updateImageFormat(selectedFormat: ImageFormat) {
+    console.log(selectedFormat);
+    this.snapService.setSnapOptions({ imageFormat: selectedFormat });
+    console.log(this.snapService.getSnapOptions());
   }
 
   checkViewPort(viewport: string) {
@@ -55,5 +65,12 @@ export class SnapOptionsComponent {
     this.isViewPortInvalid = false;
     this.updateViewport(viewport);
     return false;
+  }
+  ngOnInit(): void {
+    this.imageFormats = [
+      { format: 'png' } ,
+      { format: 'webp' },
+      { format: 'jpg' } ,
+    ];
   }
 }

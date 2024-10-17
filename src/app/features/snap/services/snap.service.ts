@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, Subject, tap } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { SnapOptions, type SnapData } from '../types/types';
-type ApiResponse= {
+import { type SnapOptions, type SnapData } from '../types/types';
+type ApiResponse = {
   url: string;
-}
+};
 
 @Injectable({
   providedIn: 'root',
@@ -34,6 +34,7 @@ export class SnapService {
       : {
           viewport: '1920x1080',
           captureFullPage: false,
+          imageFormat: { format: 'png' },
         };
   }
 
@@ -60,7 +61,7 @@ export class SnapService {
   }
 
   getSnap(url: string, snapOptions: SnapOptions): Observable<string> {
-    const [width, height] = snapOptions.viewport.split("x");
+    const [width, height] = snapOptions.viewport.split('x');
     this.setData({
       snapUrl: '',
       showSnappedImage: false,
@@ -68,7 +69,7 @@ export class SnapService {
     this.isLoading.next(true);
     return this.http
       .get<ApiResponse>(
-        `https://api.apiflash.com/v1/urltoimage?access_key=${process.env["TOKEN"]}&wait_until=page_loaded&url=${url}&response_type=json&full_page=${snapOptions.captureFullPage}&width=${width}&height=${height}`,
+        `https://api.apiflash.com/v1/urltoimage?access_key=${process.env['TOKEN']}&wait_until=page_loaded&url=${url}&response_type=json&full_page=${snapOptions.captureFullPage}&width=${width}&height=${height}&format=${snapOptions.imageFormat.format}`,
         { responseType: 'json' },
       )
       .pipe(
