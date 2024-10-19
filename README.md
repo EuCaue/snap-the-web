@@ -1,27 +1,40 @@
-# SnapTheWeb
+# Snap the Web
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.4.
+> A fast and intuitive web app for capturing customizable website screenshots
+> directly in your browser.
 
-## Development server
+![Preview of snap the web](./preview.png)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Live preview
 
-## Code scaffolding
+[🌐 Check out Snap the web here](https://snap-the-web.vercel.app/)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Tech Stack
 
-## Build
+- **Angular**
+- **PrimeNG**
+- **Tailwind CSS**
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## How It Works
 
-## Running unit tests
+Snap the Web uses a combination of Angular and PrimeNG to offer a seamless,
+responsive UI. Tailwind CSS is used for styling, providing a clean,
+mobile-first design. Screenshots are captured by interacting directly with the
+webpage through browser APIs, ensuring high accuracy and speed.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Use Cases
 
-## Running end-to-end tests
+- Web Designers – Capture full or partial page screenshots to showcase design work.
+- Developers – Document the progress or issues on web projects.
+- Marketers – Grab clean, high-resolution screenshots for presentations or reports.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Development
 
-## Further help
+Clone the repo and run the following commands to start the project locally:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```bash
+git clone https://github.com/EuCaue/snap-the-web.git
+cd snap-the-web
+npm install
+npm start
+```

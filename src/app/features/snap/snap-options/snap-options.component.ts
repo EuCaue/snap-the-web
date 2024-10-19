@@ -68,9 +68,9 @@ export class SnapOptionsComponent implements OnInit {
   }
   ngOnInit(): void {
     this.imageFormats = [
-      { format: 'png' } ,
+      { format: 'png' },
+      { format: 'jpg' },
       { format: 'webp' },
-      { format: 'jpg' } ,
     ];
   }
 }
